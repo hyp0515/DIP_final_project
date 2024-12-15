@@ -3,9 +3,9 @@ import numpy as np
 from glob import glob
 from PIL import Image
 
-def preprocess_fingerprint_dataset(input_dir, output_fname, num_fingers=10, num_impressions=8, output_size=(128, 128)):
+def preprocess_fingerprint_dataset(input_dir, output_fname, num_fingers=10, num_impressions=8, output_size=(160, 160)):
     """
-    Preprocess all fingerprint .tif images and organize into (10, 8, 128, 128, 1).
+    Preprocess all fingerprint .tif images and organize into (10, 8, 160, 160, 1).
 
     Args:
         input_dir (str): Path to the directory containing .tif files.
@@ -14,7 +14,7 @@ def preprocess_fingerprint_dataset(input_dir, output_fname, num_fingers=10, num_
         output_size (tuple): Desired output size (height, width).
 
     Returns:
-        numpy.ndarray: Dataset as a NumPy array of shape (10, 8, 128, 128, 1).
+        numpy.ndarray: Dataset as a NumPy array of shape (10, 8, 160, 160, 1).
     """
     # Initialize an empty array for the dataset
     dataset = np.zeros((num_fingers, num_impressions, output_size[0], output_size[1], 1), dtype=np.float32)
