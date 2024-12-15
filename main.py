@@ -52,7 +52,7 @@ loaded_train = np.load('./np_data/img_train.npy')
 print(loaded_real.shape)
 print(loaded_train.shape)
 
-x = np.clip(loaded_train / 255 + np.random.normal(0, 0.05, loaded_train.shape), 0., 1.)
+x = np.clip(loaded_train / 255 + np.random.normal(0, 0.1, loaded_train.shape), 0., 1.)
 # x = loaded_train / 255
 y = loaded_train / 255
 
