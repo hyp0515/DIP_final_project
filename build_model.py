@@ -30,21 +30,30 @@ def build_cnn_reconstructor(input_shape):
     input_img = layers.Input(shape=input_shape)
 
     # Convolutional Layers - Feature Extraction
-    x = layers.Conv2D(32, (3, 3), activation='relu', padding='same')(input_img)
+    x = input_img
+    # x = layers.Conv2D(16, (3, 3), activation='relu', padding='same')(x)
+    # x = layers.Conv2D(16, (3, 3), activation='relu', padding='same')(x)
+    # x = layers.MaxPooling2D((2, 2), padding='same')(x)  # Downsample 1
+    
     x = layers.Conv2D(32, (3, 3), activation='relu', padding='same')(x)
-    x = layers.MaxPooling2D((2, 2), padding='same')(x)  # Downsample 1
-
-    x = layers.Conv2D(64, (3, 3), activation='relu', padding='same')(x)
-    x = layers.Conv2D(64, (3, 3), activation='relu', padding='same')(x)
+    x = layers.Conv2D(32, (3, 3), activation='relu', padding='same')(x)
     x = layers.MaxPooling2D((2, 2), padding='same')(x)  # Downsample 2
 
+    x = layers.Conv2D(64, (3, 3), activation='relu', padding='same')(x)
+    x = layers.Conv2D(64, (3, 3), activation='relu', padding='same')(x)
+    x = layers.MaxPooling2D((2, 2), padding='same')(x)  # Downsample 3
+    
     # Upsampling Layers - Reconstruction
+    
     x = layers.Conv2DTranspose(64, (3, 3), activation='relu', padding='same')(x)
     x = layers.UpSampling2D((2, 2))(x)  # Upsample 1
 
     x = layers.Conv2DTranspose(32, (3, 3), activation='relu', padding='same')(x)
     x = layers.UpSampling2D((2, 2))(x)  # Upsample 2
 
+    # x = layers.Conv2DTranspose(16, (3, 3), activation='relu', padding='same')(x)
+    # x = layers.UpSampling2D((2, 2))(x)  # Upsample 3
+    
     output_img = layers.Conv2D(1, (3, 3), activation='sigmoid', padding='same')(x)  # Reconstructed image
 
     return models.Model(input_img, output_img)
