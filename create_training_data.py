@@ -23,6 +23,26 @@ def median(img):
     img = median_filter(img, size=3)
     return np.clip(img, 0, 1)
 
+def bilateral_detail(img):  #保留細節, 圖像模糊
+    img = img.astype(np.float32)
+    img = cv2.bilateralFilter(img,9,10,75)  #小鄰域 = 9, 高顏色敏感度 = 10, 中等空間範圍 = 75    
+    return np.clip(img, 0, 1)
+
+def bilateral_blur(img):  #平滑程度明顯增強，更多細節被模糊化，但邊緣仍保留。
+    img = img.astype(np.float32)
+    img = cv2.bilateralFilter(img,20,10,150)      
+    return np.clip(img, 0, 1)
+
+def bilateral_edge(img):  #邊緣清晰，但色彩分佈可能變得不自然。
+    img = img.astype(np.float32)
+    img = cv2.bilateralFilter(img,9,100,10)      
+    return np.clip(img, 0, 1)
+
+def bilateral_smooth(img):  #濾波範圍更大，細節被平滑化，但邊緣仍保留。
+    img = img.astype(np.float32)
+    img = cv2.bilateralFilter(img,9,100,50)      
+    return np.clip(img, 0, 1)
+
 def randomly_generate_testing_data(real_dataset, repeat=100):
     
     n_samples, height, width, channels = real_dataset.shape
@@ -30,17 +50,20 @@ def randomly_generate_testing_data(real_dataset, repeat=100):
     testing_dataset = np.empty((n_samples * repeat, height, width, channels))
 
     augmentations = [
-        # blur,
-        # sharpen,
-        # noise,
-        # median,
-        # lambda img: blur(sharpen(img)),  # Blur + Sharpen
-        # lambda img: blur(noise(img)),    # Blur + Noise
-        # lambda img: sharpen(noise(img)), # Sharpen + Noise
-        # lambda img: blur(sharpen(noise(img))),  # Blur + Sharpen + Noise
-        # lambda img: median(noise(img)),
-        lambda img: img,  # Original
-        lambda img: img,  # Original
+        blur,
+        sharpen,
+        noise,
+        median,
+        bilateral_edge,
+        # bilateral_edge,
+        # bilateral_edge,
+        # bilateral_edge,
+        # bilateral_edge,
+        lambda img: blur(sharpen(img)),  # Blur + Sharpen
+        lambda img: blur(noise(img)),    # Blur + Noise
+        lambda img: sharpen(noise(img)), # Sharpen + Noise
+        lambda img: blur(sharpen(noise(img))),  # Blur + Sharpen + Noise
+        lambda img: median(noise(img)),
         lambda img: img,  # Original
         lambda img: img,  # Original
         lambda img: img,  # Original

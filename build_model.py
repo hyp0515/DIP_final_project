@@ -57,3 +57,35 @@ def build_cnn_reconstructor(input_shape):
     output_img = layers.Conv2D(1, (3, 3), activation='sigmoid', padding='same')(x)  # Reconstructed image
 
     return models.Model(input_img, output_img)
+
+
+def build_unet_reconstructor(input_shape):
+    inputs = layers.Input(shape=input_shape)
+    
+    # Encoder
+    c1 = layers.Conv2D(32, (3, 3), activation='relu', padding='same')(inputs)
+    c1 = layers.Conv2D(32, (3, 3), activation='relu', padding='same')(c1)
+    p1 = layers.MaxPooling2D((2, 2))(c1)
+    
+    c2 = layers.Conv2D(64, (3, 3), activation='relu', padding='same')(p1)
+    c2 = layers.Conv2D(64, (3, 3), activation='relu', padding='same')(c2)
+    p2 = layers.MaxPooling2D((2, 2))(c2)
+    
+    # Bottleneck
+    c3 = layers.Conv2D(128, (3, 3), activation='relu', padding='same')(p2)
+    c3 = layers.Conv2D(128, (3, 3), activation='relu', padding='same')(c3)
+    
+    # Decoder with Skip Connections
+    u2 = layers.UpSampling2D((2, 2))(c3)
+    u2 = layers.concatenate([u2, c2])
+    c4 = layers.Conv2D(64, (3, 3), activation='relu', padding='same')(u2)
+    c4 = layers.Conv2D(64, (3, 3), activation='relu', padding='same')(c4)
+    
+    u1 = layers.UpSampling2D((2, 2))(c4)
+    u1 = layers.concatenate([u1, c1])
+    c5 = layers.Conv2D(32, (3, 3), activation='relu', padding='same')(u1)
+    c5 = layers.Conv2D(32, (3, 3), activation='relu', padding='same')(c5)
+    
+    outputs = layers.Conv2D(1, (3, 3), activation='sigmoid', padding='same')(c5)
+    
+    return models.Model(inputs, outputs)
