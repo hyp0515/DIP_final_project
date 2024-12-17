@@ -12,15 +12,15 @@ model.summary()
 
 loaded_real  = np.load('./np_data/img_real.npy')
 
-x = randomly_generate_testing_data(loaded_real/ 255, repeat=100)
-y = np.repeat(loaded_real, 100, axis=0) / 255
+x = randomly_generate_testing_data(loaded_real/ 255, repeat=500)
+y = np.repeat(loaded_real, 500, axis=0) / 255
 
 X_train, X_test, y_train, y_test = train_test_split(x, y, test_size=0.1)
 
 history = model.fit(
     X_train, y_train,
-    epochs=5,
-    batch_size=2,
+    epochs=7,
+    batch_size=5,
     validation_data=(X_test, y_test)
 )
 
