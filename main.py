@@ -31,19 +31,19 @@ print(y.shape)
 
 X_train, X_test, y_train, y_test = train_test_split(x, y, test_size=0.1)
 
-history = model.fit(
-    X_train, y_train,
-    epochs=5,
-    batch_size=2,
-    validation_data=(X_test, y_test)
-)
-model.save('model.h5')
+# history = model.fit(
+#     X_train, y_train,
+#     epochs=5,
+#     batch_size=2,
+#     validation_data=(X_test, y_test)
+# )
+# model.save('model.h5')
 
-plt.plot(history.history['loss'], label='Train Loss')
-plt.plot(history.history['val_loss'], label='Validation Loss')
-plt.legend()
-plt.savefig('train_loss.png')
-plt.close('all')
+# plt.plot(history.history['loss'], label='Train Loss')
+# plt.plot(history.history['val_loss'], label='Validation Loss')
+# plt.legend()
+# plt.savefig('train_loss.png')
+# plt.close('all')
 
 
 # 加載模型
@@ -69,8 +69,8 @@ processed_image = np.expand_dims(processed_image, axis=(0, -1))  # Shape: (1, 16
 # processed_image = enhance_fingerprints(processed_image)
 # processed_image[0, :, :, 0] = sharpen(processed_image[0, :, :, 0])
 # 預測
-# noised_img = np.clip(processed_image + np.random.normal(0, 0.05, processed_image.shape), 0., 1.)
-noised_img = processed_image
+noised_img = np.clip(processed_image + np.random.normal(0, 0.05, processed_image.shape), 0., 1.)
+# noised_img = processed_image
 reconstructed_image = load_trained.predict(noised_img)
 reconstructed_image[0, :, :, 0] = sharpen(reconstructed_image[0, :, :, 0])
 # 將圖片可視化
