@@ -16,7 +16,7 @@ def sharpen(img):
     return np.clip(img, 0, 1)
 
 def noise(img):
-    img = np.clip(img + np.random.normal(0, 0.05, img.shape), 0., 1.)
+    img = np.clip(img + np.random.normal(0, 0.1, img.shape), 0., 1.)
     return img
 
 def median(img):
@@ -51,23 +51,15 @@ def randomly_generate_testing_data(real_dataset, repeat=100):
 
     augmentations = [
         blur,
+        blur,
+        sharpen,
         sharpen,
         noise,
-        median,
-        bilateral_edge,
-        # bilateral_edge,
-        # bilateral_edge,
-        # bilateral_edge,
-        # bilateral_edge,
-        lambda img: blur(sharpen(img)),  # Blur + Sharpen
-        lambda img: blur(noise(img)),    # Blur + Noise
-        lambda img: sharpen(noise(img)), # Sharpen + Noise
-        lambda img: blur(sharpen(noise(img))),  # Blur + Sharpen + Noise
-        lambda img: median(noise(img)),
-        lambda img: img,  # Original
-        lambda img: img,  # Original
-        lambda img: img,  # Original
-        lambda img: img,  # Original
+        noise,
+        noise,
+        noise,
+        noise,
+        # bilateral_smooth,
         lambda img: img,  # Original
         lambda img: img,  # Original
     ]
