@@ -6,7 +6,6 @@ from create_training_data import *
 
 input_shape = (160, 160, 1)  # Grayscale image of size 160 * 160
 model = build_unet_reconstructor(input_shape)
-# model = build_autoencoder(input_shape)
 model.compile(optimizer='adam', loss='mse')
 model.summary()
 
