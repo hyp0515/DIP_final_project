@@ -50,23 +50,18 @@ def randomly_generate_testing_data(real_dataset, repeat=100):
 
     augmentations = [
         blur,
-        blur,
-        sharpen,
         sharpen,
         noise,
-        noise,
-        noise,
-        noise,
-        noise,
-        # bilateral_smooth,
-        lambda img: img,  # Original
         lambda img: img,  # Original
     ]
             
     for i in range(n_samples):
         for j in range(repeat):
-            method_idx = np.random.randint(0, len(augmentations))
-            augmented_img = augmentations[method_idx](real_dataset[i, :, :, 0])
+            method_idices = np.random.randint(0, len(augmentations), size=2)
+            if method_idices[0] != method_idices[1]: 
+                augmented_img = augmentations[method_idices[0]](augmentations[method_idices[1]](real_dataset[i, :, :, 0]))
+            else:
+                augmented_img = augmentations[method_idices[0]](real_dataset[i, :, :, 0])
             testing_dataset[i * repeat + j, :, :, 0] = augmented_img
             
     return testing_dataset

@@ -18,7 +18,7 @@ X_train, X_test, y_train, y_test = train_test_split(x, y, test_size=0.1)
 
 history = model.fit(
     X_train, y_train,
-    epochs=7,
+    epochs=10,
     batch_size=5,
     validation_data=(X_test, y_test)
 )
